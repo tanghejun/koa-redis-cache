@@ -4,12 +4,12 @@
 const pathToRegExp = require('path-to-regexp')
 const wrapper = require('co-redis')
 const readall = require('readall')
-const Redis = require('redis')
 
 module.exports = function(options) {
   options = options || {}
   let redisAvailable = false
-  let redisOptions = options.redis || {}
+  let redisInstance = options.redis
+  if (!redisInstance) throw new Error('必须提供redis实例')
   const prefix = options.prefix || 'koa-redis-cache:'
   const expire = options.expire || 30 * 60 // 30 min
   const routes = options.routes || ['(.*)']
@@ -21,9 +21,7 @@ module.exports = function(options) {
   /**
    * redisClient
    */
-  redisOptions.port = redisOptions.port || 6379
-  redisOptions.host = redisOptions.host || 'localhost'
-  const redisClient = wrapper(Redis.createClient(redisOptions.port, redisOptions.host, redisOptions.options))
+  const redisClient = wrapper(redisInstance)
   redisClient.on('error', (error)=> {
     redisAvailable = false
     onerror(error)

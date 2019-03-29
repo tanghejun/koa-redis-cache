@@ -48,15 +48,7 @@ app.use(cache(options))
   - type: `Function`
   - callback function for error, default is `function() {}`
 * redis
-  - type: `Object`
-  - redis options
-* redis.port
-  - type: `Number`
-* redis.host
-  - type: `String`
-* redis.options
-  - type: `Object`
-  - see [node_redis](https://github.com/mranney/node_redis)
+  - redis instance
 
 ### set different expire for each route
 
